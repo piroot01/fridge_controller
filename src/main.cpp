@@ -8,7 +8,6 @@
 
 bool clear = true;
 long old_encoder_value = 0;
-bool button_state = false;
 
 void clear_lcd();
 
@@ -17,8 +16,8 @@ void setup ()
   pinMode(button, INPUT_PULLUP);
   lcd.init();
   lcd.backlight();
-  //temp_setup();
-  //time_setup();
+  temp_setup();
+  time_setup();
 }
 
 void loop () 
@@ -33,8 +32,8 @@ void loop ()
   }
   if (menu_active == false)
   {
-    //print_temp();
-    //print_time();
+    print_temp();
+    print_time();
   }
 
   long curr = Enc.read();

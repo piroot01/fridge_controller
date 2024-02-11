@@ -9,7 +9,7 @@
 void menu();
 void print_options(char option[]);
 
-bool option_button = false;
+bool button_state = false;
 bool menu_active = false;
 
 char opt1[] = "Change temperature";
@@ -20,7 +20,6 @@ char opt4[] = "Exit";
 void menu()
 {
     position(menu_position);
-    option_button = digitalRead(button);
 
     switch (menu_position)
     {
@@ -29,18 +28,15 @@ void menu()
             break;
         case 1:
             print_options(opt2);
-            if (option_button == true)
-            {
-                
-            }
             break;
         case 2:
             print_options(opt3);
             break;
-        case 3:
+        case 3:         
             print_options(opt4);
-            if (option_button == true)
+            if (button_state == true)
             {
+                lcd.clear();
                 menu_active = false;
             }
             break;
