@@ -1,15 +1,16 @@
+#pragma once
+
 #include <Arduino.h>
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 #include <menu_location.h>
+#include <pins.h>
 
 void menu();
 void print_options(char option[]);
 
 bool option_button = false;
-bool exit_menu = false;
-
-const int menu_button = 9;
+bool menu_active = false;
 
 char opt1[] = "Change temperature";
 char opt2[] = "Change LED color";
@@ -19,7 +20,7 @@ char opt4[] = "Exit";
 void menu()
 {
     position(menu_position);
-    option_button = digitalRead(menu_button);
+    option_button = digitalRead(button);
 
     switch (menu_position)
     {
@@ -40,7 +41,7 @@ void menu()
             print_options(opt4);
             if (option_button == true)
             {
-                exit_menu = true;
+                menu_active = false;
             }
             break;
     }

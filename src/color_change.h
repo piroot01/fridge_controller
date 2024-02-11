@@ -19,7 +19,6 @@ void change_color()
 {
     for (int i; i < LED_AMMOUNT; i++)
     {
-        leds[i] = CRGB::blue;
     }
 
     FastLED.show();

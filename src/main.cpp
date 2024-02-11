@@ -4,30 +4,26 @@
 #include <temp_print.h>
 #include <LiquidCrystal_I2C.h>
 #include <menu.h>
-#include <color_change.h>
+#include <pins.h>
 
-const int button = 9;
 bool clear = true;
 long old_encoder_value = 0;
-bool menu_active = false;
 bool button_state = false;
 
 void clear_lcd();
 
 void setup () 
 {
-  pinMode(9, INPUT_PULLUP);
+  pinMode(button, INPUT_PULLUP);
   lcd.init();
   lcd.backlight();
-  temp_setup();
-  time_setup();
-  led_setup();
+  //temp_setup();
+  //time_setup();
 }
 
 void loop () 
 {
   button_state = !digitalRead(button);
-  change_color();
 
   if (button_state == true)
   {
@@ -37,8 +33,8 @@ void loop ()
   }
   if (menu_active == false)
   {
-    print_temp();
-    print_time();
+    //print_temp();
+    //print_time();
   }
 
   long curr = Enc.read();
