@@ -11,6 +11,7 @@ LiquidCrystal_I2C lcd(0x27, 20, 4);
 
 void time_setup();
 void print_time();
+void print_dash();
 
 #define countof(a) (sizeof(a) / sizeof(a[0]))
 
@@ -31,10 +32,6 @@ void printDateTime(const RtcDateTime& dt)
 void time_setup()
 {
   Rtc.Begin();
-  lcd.setCursor(6,0);
-  lcd.print("--------");
-  lcd.setCursor(6,2);
-  lcd.print("--------");
 
   RtcDateTime compiled = RtcDateTime(__DATE__, __TIME__);
   printDateTime(compiled);
@@ -46,6 +43,20 @@ void print_time()
 {
   
   RtcDateTime now = Rtc.GetDateTime();
-
+  print_dash();
   printDateTime(now);
+}
+
+void print_dash()
+{
+  bool dash_aviable = true;
+  
+  if (dash_aviable = true)
+  {
+    lcd.setCursor(6,0);
+    lcd.print("--------");
+    lcd.setCursor(6,2);
+    lcd.print("--------");
+    dash_aviable = false;
+  }
 }

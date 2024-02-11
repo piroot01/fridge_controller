@@ -5,70 +5,75 @@
 #include <LiquidCrystal_I2C.h>
 #include <menu.h>
 #include <pins.h>
+#include <menu_location.h>
 
+extern bool button_state;
+extern int menu_position;
 
-// lepsi pridat, pokud beres promennou button_state z menu.h, pokud to je teda dobre
-// extern bool button_state;
-
-bool clear = true;
 long old_encoder_value = 0;
+bool call_control = false;
+bool button_rising = false;
 
-void clear_lcd();
+void update_vars(bool button_state);
+void display_control();
 
 void setup () 
 {
   pinMode(button, INPUT_PULLUP);
 
-  // do lcd_setup();
   lcd.init();
   lcd.backlight();
   temp_setup();
   time_setup();
+  state = State::INFO;
+  Serial.begin(9600);
 }
 
 void loop () 
 {
-  // nadekalrovany v menu.h?
   button_state = !digitalRead(button);
 
-  if (button_state == true)
+  update_vars(button_state);
+  display_control();
+}
+
+void update_vars(bool button_state)
+{
+  if (button_state == true and button_rising == false)
   {
-    menu_active = true;
-    // clear_lcd by melo clearovat display nezavisle na promenne clear
-    clear_lcd();
-    // dal bych do separatni funkce, ktera se bude rozhodovat na zaklade menu_active
-    menu();
+    button_rising = true;
+  }  
+  if (button_state == false and button_rising == true and state == State::INFO)
+  {
+    lcd.clear();
+    state = State::MENU;
+    call_control = true;
+    button_rising = false;
+  }
+  else if(button_state == false and button_rising == true and state == State::MENU and menu_position == 3)
+  {
+    lcd.clear();
+    state = State::INFO;
+    call_control = true;
+    button_rising = false;
+  }
+  else if (button_state == false and button_rising == true)
+  {
+    button_rising = false;
   }
 
-  if (menu_active == false)
+  position(menu_position);
+}
+
+void display_control()
+{
+  if (state == State::MENU)
+  {
+    menu();
+  }
+  if (state == State::INFO)
   {
     print_temp();
     print_time();
-  }
-
-  // vycitani z encoderu do funkce, ktera nastavi hodnotu menu_active
-  long curr = Enc.read();
-
-  if(old_encoder_value != curr and menu_active)
-  {
-    old_encoder_value = curr;
-    // opet resi jina funkce
-    menu();
-  }
-
-}
-
-
-// BS code
-void clear_lcd()
-{
-  if (clear == true)
-  {
-    lcd.clear();
-    clear = false;
-  }
-  else
-  {
-    clear = false;
   }
 }

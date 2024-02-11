@@ -42,8 +42,8 @@ void print_temp()
   TX = (1 / ((ln / B) + (1 / T0))); //Temperature from thermistor
 
   TX =  TX - 273.15;                 //Conversion to Celsius
-  lcd.setCursor(6,3);
-  lcd.print(TX);
+  lcd.setCursor(11,3);
+  lcd.print(TX, 1);
   lcd.setCursor(12,3);
   lcd.write((byte)0);
   lcd.setCursor(13,3);

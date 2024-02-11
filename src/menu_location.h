@@ -1,34 +1,29 @@
+#pragma once
 #include <Arduino.h>
 #include <Wire.h>
 #include <Encoder.h>
 
 const int menu_size =  4;
 int menu_position;
+long old_value = -999;
+long encoder_value = 0;
+extern bool call_control;
+bool encoder_control = false;
 
  Encoder Enc(11, 10);
 
-void position(int location) 
+void position(int& location) 
 {
-  long encoder_value = Enc.read() / 2;
-  if (encoder_value < 0) 
-  {
-    encoder_value += 1000;
-  }
-  location = encoder_value % (menu_size);
+  encoder_value = Enc.read() / 2;
 
-  switch(location)
+  if (encoder_value != old_value)
   {
-    case 0:
-      menu_position = 0;
-      break;
-    case 1:
-      menu_position = 1;
-      break;
-    case 2:
-      menu_position = 2;
-      break;
-    case 3:
-      menu_position = 3;
-      break;
+    encoder_control = true;
+    old_value = encoder_value;
+    if (encoder_value < 0) 
+    {
+      encoder_value += 1000;
+    }
+    location = encoder_value % (menu_size);
   }
 }
