@@ -1,13 +1,11 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <RtcDS1302.h>
-#include <LiquidCrystal_I2C.h>
+#include <display_init.h>
 
 ThreeWire myWire(4,2,3);
 RtcDS1302<ThreeWire> Rtc(myWire);
 void printDateTime(const RtcDateTime& dt);
-
-LiquidCrystal_I2C lcd(0x27, 20, 4);
 
 void time_setup();
 void print_time();
@@ -51,7 +49,7 @@ void print_dash()
 {
   bool dash_aviable = true;
   
-  if (dash_aviable = true)
+  if (dash_aviable == true)
   {
     lcd.setCursor(6,0);
     lcd.print("--------");

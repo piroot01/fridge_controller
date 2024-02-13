@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <Wire.h>
-#include <LiquidCrystal_I2C.h>
+#include <display_init.h>
 
 #define RT0 10000   // Ω
 #define B 3977      //  K
@@ -42,7 +42,7 @@ void print_temp()
   TX = (1 / ((ln / B) + (1 / T0))); //Temperature from thermistor
 
   TX =  TX - 273.15;                 //Conversion to Celsius
-  lcd.setCursor(11,3);
+  lcd.setCursor(7,3);
   lcd.print(TX, 1);
   lcd.setCursor(12,3);
   lcd.write((byte)0);
