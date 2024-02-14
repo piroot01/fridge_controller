@@ -3,7 +3,7 @@
 #include <RtcDS1302.h>
 #include <display_init.h>
 
-ThreeWire myWire(4,2,3);
+ThreeWire myWire(4,3,2); //io, sclk, ce
 RtcDS1302<ThreeWire> Rtc(myWire);
 void printDateTime(const RtcDateTime& dt);
 

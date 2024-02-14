@@ -8,6 +8,7 @@
 #include <utils.h>
 #include <structs.h>
 #include <setting_data.h>
+#include <color_change.h>
 
 Encoder Enc(11, 10);
 
@@ -17,6 +18,7 @@ long old_encoder_value = 0;
 bool call_control = false;
 bool button_rising = false;
 bool change_flag = false;
+const int color_range = 12;
 
 MIDDLE_LVL_STATE mid_lvl;
 TOP_LVL_STATE top_lvl;
@@ -38,6 +40,7 @@ void setup ()
   lcd.backlight();
   temp_setup();
   time_setup();
+  led_setup();
   top_lvl = TOP_LVL_STATE::INFO;
   Serial.begin(9600);
 }
@@ -65,8 +68,9 @@ void loop ()
     update_lcd_once(top_lvl, mid_lvl);
     change_flag = false;
   }
-  
+
   update_lcd(top_lvl, mid_lvl);
+
 }
 
 bool button_change(Encoder_values& state)
@@ -143,6 +147,19 @@ void update_mid_lvl_btn(Encoder_values& state)
 
 void update_bot_lvl(Encoder_values& state)
 {
-  requested_temp = crop_encoder(state, temp_range);
-  Serial.println(requested_temp);
+  if (top_lvl == TOP_LVL_STATE::SETTING)
+  {
+    switch (mid_lvl)
+    {
+      case MIDDLE_LVL_STATE::TEMPERATURE:
+        Serial.println(requested_color);
+        requested_temp = crop_encoder(state, temp_range);
+        break;
+      case MIDDLE_LVL_STATE::COLOR:
+        requested_color = crop_encoder(state, color_range);
+        break;
+      default:
+        break;
+    }
+  }
 }

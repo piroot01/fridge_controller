@@ -1,25 +1,53 @@
+#pragma once
+
 #include <Arduino.h>
 #include <Wire.h>
 #include <FastLED.h>
+#include <rgbw.h>
+#include <colors.h>
+#include <setting_data.h>
 
-#define LED_AMMOUNT 30
-#define DATA_PIN A2
-#define LED_TYPE WS2812B
-#define BRIGHTNESS 255
-#define SATURATION 255
+const int num_leds = 30;
+const unsigned int brightness = 128;
+const int data_pin = A2;
 
-CRGB leds[LED_AMMOUNT];
+void print_setting_color();
+
+CRGBW leds[num_leds];
+CRGB *ledsRGB = (CRGB *) &leds[0];
 
 void led_setup()
 {
-    FastLED.addLeds<LED_TYPE, DATA_PIN>(leds, LED_AMMOUNT);
+    FastLED.addLeds<WS2812B, data_pin, RGB>(ledsRGB, getRGBWsize(num_leds));
+	FastLED.setBrightness(brightness);
+	FastLED.show();
 }
 
-void change_color()
+void change_color(CRGB color)
 {
-    for (int i; i < LED_AMMOUNT; i++)
+    for (int i = 0; i < num_leds; i++)
     {
+        leds[i] = color;
     }
-
     FastLED.show();
+}
+
+void print_setting_color()
+{
+    //Serial.println(requested_temp);
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Choose color:");
+    lcd.setCursor(0,2);
+    lcd.print(color_names[requested_color]);
+}
+
+void rainbow(){
+	static unsigned short hue;
+
+	for(int i = 0; i < num_leds; i++){
+		leds[i] = CHSV((i * 256 / num_leds) + hue, 255, 255);
+	}
+	FastLED.show();
+	hue++;
 }

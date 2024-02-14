@@ -6,7 +6,7 @@
 #define RT0 10000   // Ω
 #define B 3977      //  K
 #define VCC 5    //Supply  voltage
-#define R 10000 //R=10KΩ
+const int R = 10000; //R=10KΩ
 
 //Variables
 float RT, VR, ln, TX,  T0, VRT;

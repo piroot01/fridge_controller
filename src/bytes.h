@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Wire.h>
+#include <Arduino.h>
 
 byte celsius[] = {
   0x0C,
