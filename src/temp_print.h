@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <display_init.h>
+#include <bytes.h>
 
 #define RT0 10000   // Ω
 #define B 3977      //  K
@@ -10,17 +11,6 @@
 //Variables
 float RT, VR, ln, TX,  T0, VRT;
 
-byte degree[] = {
-  0x0C,
-  0x12,
-  0x12,
-  0x0C,
-  0x00,
-  0x00,
-  0x00,
-  0x00
-};
-
 void temp_setup();
 void print_temp();
 
@@ -28,7 +18,7 @@ void temp_setup()
 {
   T0 = 25 + 273.15;  
   pinMode(A1,INPUT);
-  lcd.createChar(0, degree);
+  lcd.createChar(0, celsius);
 }
 
 void print_temp()

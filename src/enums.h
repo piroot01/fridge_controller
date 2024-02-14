@@ -2,7 +2,7 @@
 
 enum TOP_LVL_STATE
 {
-    INFO, MENU
+    INFO, MENU, SETTING
 };
 
 enum MIDDLE_LVL_STATE

@@ -5,10 +5,14 @@
 #include <pins.h>
 #include <temperature_change.h>
 #include <Encoder.h>
+#include <utils.h>
+#include <structs.h>
+#include <setting_data.h>
 
 Encoder Enc(11, 10);
 
 const int menu_size = 4;
+const int temp_range = 11;
 long old_encoder_value = 0;
 bool call_control = false;
 bool button_rising = false;
@@ -17,22 +21,14 @@ bool change_flag = false;
 MIDDLE_LVL_STATE mid_lvl;
 TOP_LVL_STATE top_lvl;
 
-struct Encoder_values
-{
-  bool button_state;
-  int encoder_value;
-};
-
 Encoder_values encoder_values = {false, 0};
 
-void update_vars(bool button_state);
-void display_control();
-void menu_choice();
 bool button_change(Encoder_values& state);
 void update_top_lvl(Encoder_values& state);
-void update_mid_lvl(Encoder_values& state);
+void update_mid_lvl_btn(Encoder_values& state);
+void update_mid_lvl_enc(Encoder_values& state);
 bool encoder_change(Encoder_values& state);
-int crop_encoder(Encoder_values& state, int encoder_range);
+void update_bot_lvl(Encoder_values& state);
 
 void setup () 
 {
@@ -54,11 +50,14 @@ void loop ()
   if (button_change(encoder_values))
   {
     update_top_lvl(encoder_values);
+    update_mid_lvl_btn(encoder_values);
     change_flag = true;
   }
   if (encoder_change(encoder_values))
   {
-    update_mid_lvl(encoder_values);
+    //Serial.println(encoder_values.encoder_value);
+    update_mid_lvl_enc(encoder_values);
+    update_bot_lvl(encoder_values);
     change_flag = true;
   }
   if (change_flag == true)
@@ -101,6 +100,14 @@ void update_top_lvl(Encoder_values& state)
     {
       top_lvl = TOP_LVL_STATE::INFO;
     }
+    else
+    {
+      top_lvl = TOP_LVL_STATE::SETTING;
+    }
+    break;
+  case TOP_LVL_STATE::SETTING:
+    top_lvl = TOP_LVL_STATE::INFO;
+    break;
   default:
     break;
   }
@@ -121,20 +128,21 @@ bool encoder_change(Encoder_values& state)
   }
 }
 
-void update_mid_lvl(Encoder_values& state)
+void update_mid_lvl_enc(Encoder_values& state)
 {
-  mid_lvl = (MIDDLE_LVL_STATE)crop_encoder(state, menu_size);
+  if (top_lvl == TOP_LVL_STATE::MENU)
+  {
+    mid_lvl = (MIDDLE_LVL_STATE)crop_encoder(state, menu_size);
+  }
+}
+
+void update_mid_lvl_btn(Encoder_values& state)
+{
 
 }
 
-int crop_encoder(Encoder_values& state, int encoder_range)
+void update_bot_lvl(Encoder_values& state)
 {
-  int tmp_encoder_value = state.encoder_value;
-  
-  if (tmp_encoder_value < 0) 
-  {
-    tmp_encoder_value += 1000;
-  }
-   
-  return tmp_encoder_value % (encoder_range);
+  requested_temp = crop_encoder(state, temp_range);
+  Serial.println(requested_temp);
 }
