@@ -51,3 +51,16 @@ void rainbow(){
 	FastLED.show();
 	hue++;
 }
+
+void color_control()
+{
+    if (requested_color == 11)
+    {
+        //Serial.println(requested_color);
+        rainbow();
+    }
+    else
+    {
+        change_color(colors[requested_color]);
+    }
+}
