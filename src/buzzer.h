@@ -1,8 +1,10 @@
 #pragma once
 
+// #include <must_be_included.h>
 #include <Arduino.h>
 #include <pins.h>
 
+// v podstate takhle bych tvoril kazdy modul
 unsigned long buzzer_freq = 1000;
 unsigned long alarm_freq = 4000;
 

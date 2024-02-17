@@ -1,3 +1,6 @@
+// v readme nezapomenout pridelit kredit
+// presunout do modules
+
 /* FastLED_RGBW
  * 
  * Hack to enable SK6812 RGBW strips to work with FastLED.

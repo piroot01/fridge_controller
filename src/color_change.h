@@ -1,3 +1,4 @@
+// tohle sloucit s strip_mode.h do strip.h
 #pragma once
 
 #include <Arduino.h>
@@ -9,13 +10,17 @@
 
 const int num_leds = 30;
 const unsigned int brightness = 128;
+
+// 
 const int data_pin = A2;
 
+// wtf
 void print_setting_color();
 
 CRGBW leds[num_leds];
 CRGB *ledsRGB = (CRGB *) &leds[0];
 
+// strip_setup()
 void led_setup()
 {
     FastLED.addLeds<WS2812B, data_pin, RGB>(ledsRGB, getRGBWsize(num_leds));

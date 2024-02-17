@@ -1,3 +1,4 @@
+// do module/magnet.h
 #pragma once
 
 #include <pins.h>
@@ -21,6 +22,7 @@ bool get_magnet()
     return (analogRead(magnet) > threshold)? true:false;
 }
 
+// extrahovat do door_control() do door.h
 bool magnet_logic()
 {
     static bool open_flag = false;

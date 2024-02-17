@@ -1,3 +1,4 @@
+// presunout do modules/thermistor.h
 #pragma once
 
 #include <Arduino.h>

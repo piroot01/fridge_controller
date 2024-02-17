@@ -1,3 +1,4 @@
+// sloucit s color_cange.h do strip.h
 #pragma once
 
 #include <Arduino.h>
