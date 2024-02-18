@@ -1,9 +1,9 @@
 #pragma once
 
-#include <structs.h>
-#include <Arduino.h>
+#include <must_be_included.h>
 
-int crop_encoder(Encoder_values& state, int encoder_range)
+
+inline int crop_encoder(Encoder_values& state, int encoder_range)
 {
   int tmp_encoder_value = state.encoder_value;
 
@@ -11,6 +11,5 @@ int crop_encoder(Encoder_values& state, int encoder_range)
   {
     tmp_encoder_value += 1000;
   }
-  //Serial.println(tmp_encoder_value % encoder_range);
   return tmp_encoder_value % (encoder_range);
 }

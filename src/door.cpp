@@ -1,25 +1,4 @@
-#pragma once
-
-#include <pins.h>
-#include <Arduino.h>
-#include <buzzer.h>
-
-const int threshold = 100;
-unsigned long prev_mag_state_strip = 0;
-unsigned long prev_mag_state_buzzer = 0;
-const int interval_strip = 6000;
-const int interval_buzzer = 10000;
-bool buzz_flag = false;
-
-void magnet_setup()
-{
-    pinMode(magnet, INPUT);
-}
-
-bool get_magnet()
-{
-    return (analogRead(magnet) > threshold)? true:false;
-}
+#include <door.h>
 
 bool magnet_logic()
 {
@@ -52,10 +31,27 @@ bool magnet_logic()
     return false;
 }
 
-void change_alarm()
+void mode_control(STRIP_MODES mode)
 {
-    if (requested_alarm == 1)
+    switch (mode)
     {
-        alarm(buzz_flag);
+        case STRIP_MODES::ON:
+            color_control();
+            break;
+        case STRIP_MODES::AUTO:
+            if (magnet_logic())
+            {
+                color_control();
+            }
+            else
+            {
+                change_color(CRGB::Black);
+            }
+            break;
+        case STRIP_MODES::OFF:
+            change_color(CRGB::Black);
+            break;
+        default:
+            break;
     }
 }

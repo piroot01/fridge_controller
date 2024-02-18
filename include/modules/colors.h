@@ -1,6 +1,6 @@
 #pragma once
 
-#include <FastLED.h>
+#include <modules/module.h>
 
 const CRGB colors[11] = 
 {
@@ -17,7 +17,7 @@ const CRGB colors[11] =
     CRGB::Teal,
 };
 
-const char* color_names[12]
+inline const char* color_names[12]
 {
     "Blue",
     "Red",

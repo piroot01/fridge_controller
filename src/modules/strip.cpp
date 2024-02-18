@@ -1,24 +1,10 @@
-#pragma once
+#include <modules/strip.h>
 
-#include <Arduino.h>
-#include <Wire.h>
-#include <FastLED.h>
-#include <rgbw.h>
-#include <colors.h>
-#include <setting_data.h>
+CRGB* ledsRGB = (CRGB*) &leds[0];
 
-const int num_leds = 30;
-const unsigned int brightness = 128;
-const int data_pin = A2;
-
-void print_setting_color();
-
-CRGBW leds[num_leds];
-CRGB *ledsRGB = (CRGB *) &leds[0];
-
-void led_setup()
+void strip_setup()
 {
-    FastLED.addLeds<WS2812B, data_pin, RGB>(ledsRGB, getRGBWsize(num_leds));
+    FastLED.addLeds<WS2812B, strip_pin, RGB>(ledsRGB, getRGBWsize(num_leds));
 	FastLED.setBrightness(brightness);
 	FastLED.show();
 }
@@ -34,7 +20,6 @@ void change_color(CRGB color)
 
 void print_setting_color()
 {
-    //Serial.println(requested_temp);
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Choose color:");
@@ -42,7 +27,8 @@ void print_setting_color()
     lcd.print(color_names[requested_color]);
 }
 
-void rainbow(){
+void rainbow()
+{
 	static unsigned short hue;
 
 	for(int i = 0; i < num_leds; i++){
@@ -52,11 +38,19 @@ void rainbow(){
 	hue++;
 }
 
+void print_setting_mode()
+{
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Choose strip mode:");
+    lcd.setCursor(0,2);
+    lcd.print(strip_modes[requested_mode]);
+}
+
 void color_control()
 {
     if (requested_color == 11)
     {
-        //Serial.println(requested_color);
         rainbow();
     }
     else

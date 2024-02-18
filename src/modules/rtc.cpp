@@ -1,30 +1,17 @@
-#pragma once
+#include <modules/rtc.h>
 
-#include <Arduino.h>
-#include <Wire.h>
-#include <RtcDS1302.h>
-#include <display_init.h>
-#include <enums.h>
-#include <setting_data.h>
+ThreeWire wire(io_pin, sclk_pin, ce_pin);
 
-ThreeWire myWire(4,3,2); //io, sclk, ce
-RtcDS1302<ThreeWire> Rtc(myWire);
-void printDateTime(const RtcDateTime& dt);
+RtcDS1302<ThreeWire> rtc(wire);
 
-void time_setup();
-void print_time();
-void print_dash();
+SET_TIME time_state = SET_TIME::HOUR;
 
-SET_TIME time_state;
-
-#define countof(a) (sizeof(a) / sizeof(a[0]))
-
-void printDateTime(const RtcDateTime& dt)
+void print_date_time(const RtcDateTime& dt)
 {
     char datestring[13];
 
     snprintf_P(datestring, 
-            countof(datestring),
+            sizeof(datestring) / sizeof(datestring[0]),
             PSTR("%02u:%02u:%02u"),
             dt.Hour(),
             dt.Minute(),
@@ -33,22 +20,21 @@ void printDateTime(const RtcDateTime& dt)
     lcd.print(datestring);
 }
 
-void time_setup()
+void rtc_setup()
 {
-  Rtc.Begin();
-
+  rtc.Begin();
   RtcDateTime compiled = RtcDateTime(__DATE__, __TIME__);
-  printDateTime(compiled);
-  compiled += 22;
-  Rtc.SetDateTime(compiled);
+  print_date_time(compiled);
+  compiled += time_delay;
+  rtc.SetDateTime(compiled);
 }
 
 void print_time()
 {
   
-  RtcDateTime now = Rtc.GetDateTime();
+  RtcDateTime now = rtc.GetDateTime();
   print_dash();
-  printDateTime(now);
+  print_date_time(now);
 }
 
 void print_dash()
@@ -94,5 +80,5 @@ void print_setting_time()
 void set_time(int hours, int minutes)
 {
   RtcDateTime new_time = RtcDateTime(2024, 2, 16, hours, minutes, 0);
-  Rtc.SetDateTime(new_time);
+  rtc.SetDateTime(new_time);
 }

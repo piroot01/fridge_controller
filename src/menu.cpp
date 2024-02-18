@@ -1,45 +1,11 @@
-#pragma once
-
-#include <Arduino.h>
-#include <Wire.h>
-#include <display_init.h>
-#include <enums.h>
-#include <thermistor.h>
-#include <time.h>
-#include <temperature_change.h>
-#include <color_change.h>
-#include <setting_data.h>
-#include <strip_mode.h>
-
-void menu(MIDDLE_LVL_STATE mid_lvl);
-void print_options(char option[]);
-void update_lcd_once(TOP_LVL_STATE top_state, MIDDLE_LVL_STATE mid_state);
-void update_lcd(TOP_LVL_STATE top_state, MIDDLE_LVL_STATE mid_state);
-void setting(MIDDLE_LVL_STATE mid_lvl);
-
-const int menu_size = 6;
-
-const char* options[menu_size] = 
-{
-    "Change temperature",
-    "Change LED color",
-    "Change LED mode",
-    "Change alarm mode",
-    "Change time",
-    "Exit",
-};
-
-
-
-long info_update_time = 500;
-long old_millis = 0;
+#include <menu.h>
 
 void menu(MIDDLE_LVL_STATE mid_lvl)
 {
     print_options(options[(MIDDLE_LVL_STATE)mid_lvl]);
 }
 
-void print_options(char option[])
+void print_options(const char* option)
 {
     lcd.clear();
     lcd.setCursor(0,0);
@@ -54,18 +20,18 @@ void update_lcd_once(TOP_LVL_STATE top_state, MIDDLE_LVL_STATE mid_state)
     }
     else if (top_state == TOP_LVL_STATE::MENU)
     {
-        //Serial.print(mid_state);
         menu(mid_state);
     }
     else if (top_state == TOP_LVL_STATE::SETTING)
     {
-        //Serial.println(requested_color);
         setting(mid_state);
     }
 }
 
 void update_lcd(TOP_LVL_STATE top_state, MIDDLE_LVL_STATE mid_state)
 {
+    static unsigned long old_millis = 0;
+
     if (top_state == TOP_LVL_STATE::INFO)
     {        
         if (millis() > old_millis + info_update_time)
@@ -79,11 +45,9 @@ void update_lcd(TOP_LVL_STATE top_state, MIDDLE_LVL_STATE mid_state)
 
 void setting(MIDDLE_LVL_STATE mid_lvl)
 {
-    //Serial.println(mid_lvl);
     switch (mid_lvl)
     {
         case MIDDLE_LVL_STATE::TEMPERATURE:
-            //Serial.println("temp");
             print_setting_temp();
             break;
         case MIDDLE_LVL_STATE::COLOR:

@@ -1,37 +1,24 @@
-#pragma once
-
-#include <Arduino.h>
-#include <pins.h>
-
-unsigned long buzzer_freq = 1000;
-unsigned long alarm_freq = 4000;
-
-const char* alarm_modes[2]
-{
-    "OFF",
-    "ON",
-};
-
+#include <modules/buzzer.h>
 
 void buzzer_setup()
 {
-    pinMode(buzzer, OUTPUT);
+    pinMode(buzzer_pin, OUTPUT);
 }
 
 void buzz(unsigned long buzz_time)
 {
-    tone(buzzer, buzzer_freq, buzz_time);
+    tone(buzzer_pin, buzzer_freq, buzz_time);
 }
 
 void alarm(bool flag)
 {
     if (flag == true)
     {
-        tone(buzzer, alarm_freq);
+        tone(buzzer_pin, alarm_freq);
     }
     else
     {
-        noTone(buzzer);
+        noTone(buzzer_pin);
     }
 }
 
