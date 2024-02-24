@@ -23,10 +23,10 @@ void print_date_time(const RtcDateTime& dt)
 void rtc_setup()
 {
   rtc.Begin();
-  RtcDateTime compiled = RtcDateTime(__DATE__, __TIME__);
-  print_date_time(compiled);
-  compiled += time_delay;
-  rtc.SetDateTime(compiled);
+  // RtcDateTime compiled = RtcDateTime(__DATE__, __TIME__);
+  // print_date_time(compiled);
+  // compiled += time_delay;
+  // rtc.SetDateTime(compiled);
 }
 
 void print_time()
