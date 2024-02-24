@@ -8,3 +8,4 @@
 #include <modules/relay.h>
 #include <modules/lcd.h>
 #include <modules/thermistor.h>
+#include <modules/alarm.h>

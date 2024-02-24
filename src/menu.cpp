@@ -38,6 +38,10 @@ void update_lcd(TOP_LVL_STATE top_state, MIDDLE_LVL_STATE mid_state)
         {
             print_temp();
             print_time();
+            if (get_alarm())
+            {
+                print_alarm();
+            }
             old_millis = millis();
         }
     }

@@ -20,6 +20,16 @@ void update_set_temp(const double temp)
 
 void pid_loop()
 {
-    input = get_temp();
-    pid.run();
+    if (get_alarm())
+    {
+        update_set_temp(requested_temp);
+        input = get_temp();
+        pid.run();
+        digitalWrite(relay_pin, !output);
+    }
+    else
+    {
+        pid.stop();
+        digitalWrite(relay_pin, output);
+    }
 }
