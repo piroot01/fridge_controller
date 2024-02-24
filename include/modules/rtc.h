@@ -5,8 +5,8 @@
 
 static const int time_delay = 22;
 static const int io_pin = 4;
-static const int sclk_pin = 3;
-static const int ce_pin = 2;
+static const int sclk_pin = 2;
+static const int ce_pin = 3;
 
 enum SET_TIME
 {
